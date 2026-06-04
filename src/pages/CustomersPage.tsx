@@ -6,6 +6,7 @@ import type { CustomerStatus } from '../types/customer';
 export function CustomersPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState<CustomerStatus | 'all'>('all');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
     const filteredCustomers = customers.filter((customer) => {
         const searchableText = [
@@ -23,6 +24,12 @@ export function CustomersPage() {
             statusFilter === 'all' || customer.status === statusFilter;
 
         return matchesSearch && matchesStatus;
+    });
+
+    const sortedCustomers = [...filteredCustomers].sort((a, b) => {
+        const result = a.name.localeCompare(b.name);
+
+        return sortDirection === 'asc' ? result : -result;
     });
 
     return (
@@ -67,7 +74,7 @@ export function CustomersPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredCustomers.map((customer) => (
+                    {sortedCustomers.map((customer) => (
                         <tr key={customer.id}>
                             <td>{customer.name}</td>
                             <td>{customer.industry}</td>
@@ -78,6 +85,17 @@ export function CustomersPage() {
                     ))}
                 </tbody>
             </table>
+
+            <button
+                type="button"
+                onClick={() =>
+                    setSortDirection((currentDirection) =>
+                        currentDirection === 'asc' ? 'desc' : 'asc',
+                    )
+                }
+            >
+                Sort by name {sortDirection === 'asc' ? '↑' : '↓'}
+            </button>
 
             <p>
                 <Link to="/">Back home</Link>
