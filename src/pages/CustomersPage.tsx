@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { customers } from '../data/customers';
+import type { CustomerStatus } from '../types/customer';
 
 export function CustomersPage() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState<CustomerStatus | 'all'>('all');
 
     const filteredCustomers = customers.filter((customer) => {
         const searchableText = [
@@ -16,7 +18,11 @@ export function CustomersPage() {
             .join(' ')
             .toLowerCase();
 
-        return searchableText.includes(searchTerm.toLowerCase());
+        const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
+        const matchesStatus =
+            statusFilter === 'all' || customer.status === statusFilter;
+
+        return matchesSearch && matchesStatus;
     });
 
     return (
@@ -31,6 +37,20 @@ export function CustomersPage() {
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Search by name, industry, status or contact"
             />
+
+            <label htmlFor="status-filter">Status</label>
+            <select
+                id="status-filter"
+                value={statusFilter}
+                onChange={(event) =>
+                    setStatusFilter(event.target.value as CustomerStatus | 'all')
+                }
+            >
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="prospect">Prospect</option>
+            </select>
 
             <p>
                 Showing {filteredCustomers.length} of {customers.length} customers
