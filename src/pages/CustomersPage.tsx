@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { customers } from "../data/customers";
 import type { CustomerStatus } from "../types/customer";
 import { CustomerTable } from "../components/CustomerTable";
@@ -15,11 +14,6 @@ export function CustomersPage() {
     "customerSortDirection",
     "asc",
   );
-  const [theme, setTheme] = useLocalStorage<"light" | "dark">("theme", "light");
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
     null,
@@ -56,21 +50,10 @@ export function CustomersPage() {
   return (
     <main className="main">
       <h1 className="main__header">Customers</h1>
-      <button
-        type="button"
-        className="main__button"
-        onClick={() =>
-          setTheme((currentTheme) =>
-            currentTheme === "light" ? "dark" : "light",
-          )
-        }
-      >
-        {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
-      </button>
       <div className="searchAndFilters">
         <div className="searchAndFilters__item">
           <label className="searchAndFilters__label" htmlFor="customer-search">
-            Search customers
+            Search
           </label>
           <input
             className="searchAndFilters__input searchAndFilters__input--search"
@@ -110,6 +93,12 @@ export function CustomersPage() {
             customers={sortedCustomers}
             selectedCustomerId={selectedCustomerId}
             onCustomerSelect={setSelectedCustomerId}
+            sortDirection={sortDirection}
+            onSortByName={() =>
+              setSortDirection((currentDirection) =>
+                currentDirection === "asc" ? "desc" : "asc",
+              )
+            }
           />
         </div>
 
@@ -117,26 +106,12 @@ export function CustomersPage() {
           className="customersLayout__detail"
           aria-label="Customer details"
         >
-          <CustomerDetail customer={selectedCustomer} />
+          <CustomerDetail
+            customer={selectedCustomer}
+            onClose={() => setSelectedCustomerId(null)}
+          />
         </aside>
       </div>
-      {/* todo: move button into table controls */}
-      <button
-        className="main__button"
-        type="button"
-        onClick={() =>
-          setSortDirection((currentDirection) =>
-            currentDirection === "asc" ? "desc" : "asc",
-          )
-        }
-      >
-        Sort by name {sortDirection === "asc" ? "↑" : "↓"}
-      </button>
-      <p>
-        <Link to="/" className="main__navigation">
-          Back home
-        </Link>
-      </p>
     </main>
   );
 }

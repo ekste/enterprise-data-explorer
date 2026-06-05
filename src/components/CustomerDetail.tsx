@@ -3,15 +3,25 @@ import "../styles/customerDetail.css";
 
 interface CustomerDetailProps {
   customer: Customer | undefined;
+  onClose: () => void;
 }
 
-export function CustomerDetail({ customer }: CustomerDetailProps) {
+export function CustomerDetail({ customer, onClose }: CustomerDetailProps) {
   if (!customer) {
-    return <p>Select a customer to view details.</p>;
+    return;
   }
 
   return (
     <section className="customerDetail">
+      <button
+        className="customerDetail__close"
+        type="button"
+        onClick={onClose}
+        aria-label="Close customer details"
+      >
+        ×
+      </button>
+
       <h2 className="customerDetail__name">{customer.name}</h2>
 
       <div className="customerDetail__info">

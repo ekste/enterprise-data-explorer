@@ -5,19 +5,32 @@ interface CustomerTableProps {
   customers: Customer[];
   selectedCustomerId: number | null;
   onCustomerSelect: (customerId: number) => void;
+  sortDirection: "asc" | "desc";
+  onSortByName: () => void;
 }
 
 export function CustomerTable({
   customers,
   selectedCustomerId,
   onCustomerSelect,
+  sortDirection,
+  onSortByName,
 }: CustomerTableProps) {
   return (
     <table className="customerTable">
       <thead className="customerTable__thead">
         <tr className="customerTable__row customerTable__row--header">
           <th className="customerTable__cell customerTable__cell--header">
-            Name
+            <button
+              className="customerTable__sortButton"
+              type="button"
+              onClick={onSortByName}
+              aria-label={`Sort customers by name ${
+                sortDirection === "asc" ? "descending" : "ascending"
+              }`}
+            >
+              Name {sortDirection === "asc" ? "↑" : "↓"}
+            </button>
           </th>
           <th className="customerTable__cell customerTable__cell--header">
             Industry
@@ -33,7 +46,7 @@ export function CustomerTable({
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="customerTable__body">
         {customers.map((customer) => (
           <tr
             className={`customerTable__row ${

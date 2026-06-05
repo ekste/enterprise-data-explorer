@@ -32,6 +32,12 @@ button {
     letter-spacing: -0.04em;
 }
 
+.main__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
 .main__description {
     max-width: 42rem;
     margin: 0 0 var(--space-5);
@@ -92,9 +98,13 @@ button {
 
 .customersLayout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 22rem;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
     align-items: start;
+}
+
+.customersLayout:has(.customersLayout__detail:not(:empty)) {
+    grid-template-columns: minmax(0, 1fr) 22rem;
 }
 
 .customersLayout__table {
@@ -104,7 +114,6 @@ button {
 
 .customersLayout__detail {
     position: sticky;
-    top: var(--space-5);
 }
 
 @media (max-width: 900px) {
@@ -115,4 +124,29 @@ button {
     .customersLayout__detail {
         position: static;
     }
+}
+
+.appHeader {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.appHeader__nav {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.appHeader__link {
+    color: var(--color-text-muted);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.appHeader__link.active {
+    color: var(--color-primary);
 }
