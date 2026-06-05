@@ -44,7 +44,6 @@ export function CustomerTable({
             key={customer.id}
             onClick={() => onCustomerSelect(customer.id)}
           >
-            {" "}
             <td className="customerTable__cell">{customer.name}</td>
             <td className="customerTable__cell">{customer.industry}</td>
             <td className="customerTable__cell">{customer.status}</td>

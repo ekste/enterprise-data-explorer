@@ -89,3 +89,30 @@ button {
 .searchAndFilters__context {
     color: var(--color-text-muted);
 }
+
+.customersLayout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 22rem;
+    gap: var(--space-5);
+    align-items: start;
+}
+
+.customersLayout__table {
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.customersLayout__detail {
+    position: sticky;
+    top: var(--space-5);
+}
+
+@media (max-width: 900px) {
+    .customersLayout {
+        grid-template-columns: 1fr;
+    }
+
+    .customersLayout__detail {
+        position: static;
+    }
+}

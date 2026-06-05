@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { customers } from "../data/customers";
 import type { CustomerStatus } from "../types/customer";
 import { CustomerTable } from "../components/CustomerTable";
 import { CustomerDetail } from "../components/CustomerDetail";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export function CustomersPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<CustomerStatus | "all">(
-    "all",
+  const [searchTerm, setSearchTerm] = useLocalStorage("customerSearchTerm", "");
+  const [statusFilter, setStatusFilter] = useLocalStorage<
+    CustomerStatus | "all"
+  >("customerStatusFilter", "all");
+  const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
+    "customerSortDirection",
+    "asc",
   );
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [theme, setTheme] = useLocalStorage<"light" | "dark">("theme", "light");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
     null,
   );
@@ -46,6 +56,17 @@ export function CustomersPage() {
   return (
     <main className="main">
       <h1 className="main__header">Customers</h1>
+      <button
+        type="button"
+        className="main__button"
+        onClick={() =>
+          setTheme((currentTheme) =>
+            currentTheme === "light" ? "dark" : "light",
+          )
+        }
+      >
+        {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+      </button>
       <div className="searchAndFilters">
         <div className="searchAndFilters__item">
           <label className="searchAndFilters__label" htmlFor="customer-search">
@@ -83,12 +104,22 @@ export function CustomersPage() {
           Showing {filteredCustomers.length} of {customers.length} customers
         </div>
       </div>
-      <CustomerTable
-        customers={sortedCustomers}
-        selectedCustomerId={selectedCustomerId}
-        onCustomerSelect={setSelectedCustomerId}
-      />
-      <CustomerDetail customer={selectedCustomer} />
+      <div className="customersLayout">
+        <div className="customersLayout__table">
+          <CustomerTable
+            customers={sortedCustomers}
+            selectedCustomerId={selectedCustomerId}
+            onCustomerSelect={setSelectedCustomerId}
+          />
+        </div>
+
+        <aside
+          className="customersLayout__detail"
+          aria-label="Customer details"
+        >
+          <CustomerDetail customer={selectedCustomer} />
+        </aside>
+      </div>
       {/* todo: move button into table controls */}
       <button
         className="main__button"
