@@ -1,0 +1,24 @@
+.customerDetail {
+    margin-top: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.customerDetail__name {
+    margin: 0 0 var(--space-4);
+    font-size: 1.5rem;
+}
+
+.customerDetail__info {
+    display: flex;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-muted);
+}
+
+.customerDetail__info strong {
+    color: var(--color-text);
+}

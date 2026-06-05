@@ -1,0 +1,42 @@
+.customerTable {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+}
+
+.customerTable__thead {
+    background: var(--color-surface-muted);
+}
+
+.customerTable__row {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.customerTable__row:last-child {
+    border-bottom: 0;
+}
+
+.customerTable__row:hover {
+    background: var(--color-surface-muted);
+}
+
+.customerTable__row--selected {
+    background: var(--color-selected);
+}
+
+.customerTable__cell {
+    padding: var(--space-4);
+    text-align: left;
+    vertical-align: top;
+}
+
+.customerTable__cell--header {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
