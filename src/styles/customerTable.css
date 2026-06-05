@@ -24,6 +24,11 @@
     background: var(--color-surface-muted);
 }
 
+.customerTable__row:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
 .customerTable__row--selected {
     background: var(--color-selected);
 }

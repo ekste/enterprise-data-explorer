@@ -1,5 +1,5 @@
 import type { Customer } from "../types/customer";
-import '../styles/customerTable.css';
+import "../styles/customerTable.css";
 
 interface CustomerTableProps {
   customers: Customer[];
@@ -43,6 +43,14 @@ export function CustomerTable({
             }`}
             key={customer.id}
             onClick={() => onCustomerSelect(customer.id)}
+            tabIndex={0}
+            aria-selected={customer.id === selectedCustomerId}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onCustomerSelect(customer.id);
+              }
+            }}
           >
             <td className="customerTable__cell">{customer.name}</td>
             <td className="customerTable__cell">{customer.industry}</td>
