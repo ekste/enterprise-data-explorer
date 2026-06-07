@@ -1,5 +1,5 @@
-import { DataTable, type DataTableColumn } from './DataTable';
-import type { Customer } from '../types/customer';
+import { DataTable, type DataTableColumn } from '../DataTable/DataTable';
+import type { Customer } from '../../types/customer';
 
 interface CustomerTableProps {
     customers: Customer[];

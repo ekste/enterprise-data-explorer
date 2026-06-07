@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { customers } from "../data/customers";
 import type { CustomerStatus } from "../types/customer";
-import { CustomerTable } from "../components/CustomerTable";
-import { CustomerDetail } from "../components/CustomerDetail";
+import { CustomerTable } from "../components/CustomerTable/CustomerTable";
+import { CustomerDetail } from "../components/CustomerDetail/CustomerDetail";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export function CustomersPage() {

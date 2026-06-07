@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import '../styles/dataTable.css';
+import './DataTable.css';
 
 type SortDirection = 'asc' | 'desc';
 

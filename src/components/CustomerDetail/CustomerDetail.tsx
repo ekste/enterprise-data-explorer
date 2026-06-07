@@ -1,5 +1,5 @@
-import type { Customer } from "../types/customer";
-import "../styles/customerDetail.css";
+import type { Customer } from "../../types/customer";
+import "../CustomerDetail/CustomerDetail.css";
 
 interface CustomerDetailProps {
   customer: Customer | undefined;
