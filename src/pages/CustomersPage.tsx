@@ -1,19 +1,51 @@
 import { useState } from "react";
 import { customers } from "../data/customers";
-import type { CustomerStatus } from "../types/customer";
-import { CustomerTable } from "../components/CustomerTable/CustomerTable";
+import type { Customer, CustomerStatus } from "../types/customer";
+import {
+  DataTable,
+  type DataTableColumn,
+} from "../components/DataTable/DataTable";
 import { CustomerDetail } from "../components/CustomerDetail/CustomerDetail";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+
+const customerColumns: DataTableColumn<Customer>[] = [
+  {
+    key: "name",
+    header: "Name",
+    render: (customer) => customer.name,
+    sortValue: (customer) => customer.name,
+  },
+  {
+    key: "industry",
+    header: "Industry",
+    render: (customer) => customer.industry,
+    sortValue: (customer) => customer.industry,
+  },
+  {
+    key: "status",
+    header: "Status",
+    render: (customer) => customer.status,
+    sortValue: (customer) => customer.status,
+  },
+  {
+    key: "revenue",
+    header: "Revenue",
+    render: (customer) => `£${customer.annualRevenue.toLocaleString()}`,
+    sortValue: (customer) => customer.annualRevenue,
+  },
+  {
+    key: "employees",
+    header: "Employees",
+    render: (customer) => customer.employeeCount,
+    sortValue: (customer) => customer.employeeCount,
+  },
+];
 
 export function CustomersPage() {
   const [searchTerm, setSearchTerm] = useLocalStorage("customerSearchTerm", "");
   const [statusFilter, setStatusFilter] = useLocalStorage<
     CustomerStatus | "all"
   >("customerStatusFilter", "all");
-  // const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
-  //   "customerSortDirection",
-  //   "asc",
-  // );
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
     null,
@@ -36,14 +68,6 @@ export function CustomersPage() {
 
     return matchesSearch && matchesStatus;
   });
-
-//const sortedCustomers = [...filteredCustomers];
-
-  // const sortedCustomers = [...filteredCustomers].sort((a, b) => {
-  //   const result = a.name.localeCompare(b.name);
-
-  //   return sortDirection === "asc" ? result : -result;
-  // });
 
   const selectedCustomer = customers.find(
     (customer) => customer.id === selectedCustomerId,
@@ -91,11 +115,13 @@ export function CustomersPage() {
       </div>
       <div className="customersLayout">
         <div className="customersLayout__table">
-<CustomerTable
-    customers={filteredCustomers}
-    selectedCustomerId={selectedCustomerId}
-    onCustomerSelect={setSelectedCustomerId}
-/>
+          <DataTable
+            rows={filteredCustomers}
+            columns={customerColumns}
+            getRowId={(customer) => customer.id}
+            selectedRowId={selectedCustomerId}
+            onRowSelect={setSelectedCustomerId}
+          />
         </div>
 
         <aside
