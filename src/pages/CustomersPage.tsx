@@ -10,10 +10,10 @@ export function CustomersPage() {
   const [statusFilter, setStatusFilter] = useLocalStorage<
     CustomerStatus | "all"
   >("customerStatusFilter", "all");
-  const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
-    "customerSortDirection",
-    "asc",
-  );
+  // const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
+  //   "customerSortDirection",
+  //   "asc",
+  // );
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
     null,
@@ -37,11 +37,13 @@ export function CustomersPage() {
     return matchesSearch && matchesStatus;
   });
 
-  const sortedCustomers = [...filteredCustomers].sort((a, b) => {
-    const result = a.name.localeCompare(b.name);
+//const sortedCustomers = [...filteredCustomers];
 
-    return sortDirection === "asc" ? result : -result;
-  });
+  // const sortedCustomers = [...filteredCustomers].sort((a, b) => {
+  //   const result = a.name.localeCompare(b.name);
+
+  //   return sortDirection === "asc" ? result : -result;
+  // });
 
   const selectedCustomer = customers.find(
     (customer) => customer.id === selectedCustomerId,
@@ -89,17 +91,11 @@ export function CustomersPage() {
       </div>
       <div className="customersLayout">
         <div className="customersLayout__table">
-          <CustomerTable
-            customers={sortedCustomers}
-            selectedCustomerId={selectedCustomerId}
-            onCustomerSelect={setSelectedCustomerId}
-            sortDirection={sortDirection}
-            onSortByName={() =>
-              setSortDirection((currentDirection) =>
-                currentDirection === "asc" ? "desc" : "asc",
-              )
-            }
-          />
+<CustomerTable
+    customers={filteredCustomers}
+    selectedCustomerId={selectedCustomerId}
+    onCustomerSelect={setSelectedCustomerId}
+/>
         </div>
 
         <aside

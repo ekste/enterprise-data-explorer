@@ -12,7 +12,7 @@ export function CustomerDetail({ customer, onClose }: CustomerDetailProps) {
   }
 
   return (
-    <section className="customerDetail">
+    <section className="customerDetail" role="region" aria-label="Customer details">
       <button
         className="customerDetail__close"
         type="button"
