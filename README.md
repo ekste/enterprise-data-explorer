@@ -4,12 +4,6 @@ A React + TypeScript portfolio project demonstrating reusable enterprise UI patt
 
 This is not intended to be a CRUD tutorial app. The goal is to show how a senior front-end developer might approach common enterprise SaaS interface problems: reusable table architecture, filtering, sorting, persisted UI state, detail panels, routing, testing, and virtualised rendering for large datasets.
 
-## Why this project exists
-
-My professional background is in front-end architecture, design systems, accessibility, performance, SCSS, and enterprise UI development.
-
-This project exists to demonstrate those strengths in a modern React + TypeScript stack.
-
 ## Features
 
 * React + TypeScript application built with Vite
