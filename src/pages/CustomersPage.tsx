@@ -7,6 +7,10 @@ import {
 } from "../components/DataTable/DataTable";
 import { CustomerDetail } from "../components/CustomerDetail/CustomerDetail";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import {
+  filterCustomers,
+  type CustomerStatusFilter,
+} from "../utils/filterCustomers";
 
 const customerColumns: DataTableColumn<Customer>[] = [
   {
@@ -43,31 +47,17 @@ const customerColumns: DataTableColumn<Customer>[] = [
 
 export function CustomersPage() {
   const [searchTerm, setSearchTerm] = useLocalStorage("customerSearchTerm", "");
-  const [statusFilter, setStatusFilter] = useLocalStorage<
-    CustomerStatus | "all"
-  >("customerStatusFilter", "all");
+const [statusFilter, setStatusFilter] =
+  useLocalStorage<CustomerStatusFilter>("customerStatusFilter", "all");
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
     null,
   );
 
-  const filteredCustomers = customers.filter((customer) => {
-    const searchableText = [
-      customer.name,
-      customer.industry,
-      customer.status,
-      customer.contactName,
-      customer.contactEmail,
-    ]
-      .join(" ")
-      .toLowerCase();
-
-    const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" || customer.status === statusFilter;
-
-    return matchesSearch && matchesStatus;
-  });
+const filteredCustomers = filterCustomers(customers, {
+  searchTerm,
+  statusFilter,
+});
 
   const selectedCustomer = customers.find(
     (customer) => customer.id === selectedCustomerId,
