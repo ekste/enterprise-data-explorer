@@ -9,6 +9,7 @@ import {
   filterCustomers,
   type CustomerStatusFilter,
 } from "../utils/filterCustomers";
+import { CustomerGridControls } from "../components/CustomerGridControls/CustomerGridControls";
 
 const largeCustomers = generateCustomers(10000);
 
@@ -63,43 +64,14 @@ export function VirtualisedCustomersPage() {
         DOM.
       </p>
 
-      <div className="searchAndFilters">
-        <div className="searchAndFilters__item">
-          <label className="searchAndFilters__label" htmlFor="customer-search">
-            Search
-          </label>
-          <input
-            className="searchAndFilters__input searchAndFilters__input--search"
-            id="customer-search"
-            type="search"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Search by name, industry, status or contact"
-          />
-        </div>
-        <div className="searchAndFilters__item">
-          <label className="searchAndFilters__label" htmlFor="status-filter">
-            Status
-          </label>
-          <select
-            className="searchAndFilters__input searchAndFilters__input--select"
-            id="status-filter"
-            value={statusFilter}
-            onChange={(event) =>
-              setStatusFilter(event.target.value as CustomerStatusFilter)
-            }
-          >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="prospect">Prospect</option>
-          </select>
-        </div>
-        <div className="searchAndFilters__context">
-          Showing {filteredCustomers.length.toLocaleString()} of{" "}
-          {largeCustomers.length.toLocaleString()} customers
-        </div>
-      </div>
+      <CustomerGridControls
+        searchTerm={searchTerm}
+        statusFilter={statusFilter}
+        filteredCount={filteredCustomers.length}
+        totalCount={largeCustomers.length}
+        onSearchTermChange={setSearchTerm}
+        onStatusFilterChange={setStatusFilter}
+      />
 
       <VirtualisedDataTable
         rows={filteredCustomers}

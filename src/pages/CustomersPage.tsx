@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { customers } from "../data/customers";
-import type { Customer, CustomerStatus } from "../types/customer";
+import type { Customer } from "../types/customer";
 import {
   DataTable,
   type DataTableColumn,
@@ -11,6 +11,7 @@ import {
   filterCustomers,
   type CustomerStatusFilter,
 } from "../utils/filterCustomers";
+import { CustomerGridControls } from "../components/CustomerGridControls/CustomerGridControls";
 
 const customerColumns: DataTableColumn<Customer>[] = [
   {
@@ -47,17 +48,19 @@ const customerColumns: DataTableColumn<Customer>[] = [
 
 export function CustomersPage() {
   const [searchTerm, setSearchTerm] = useLocalStorage("customerSearchTerm", "");
-const [statusFilter, setStatusFilter] =
-  useLocalStorage<CustomerStatusFilter>("customerStatusFilter", "all");
+  const [statusFilter, setStatusFilter] = useLocalStorage<CustomerStatusFilter>(
+    "customerStatusFilter",
+    "all",
+  );
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
     null,
   );
 
-const filteredCustomers = filterCustomers(customers, {
-  searchTerm,
-  statusFilter,
-});
+  const filteredCustomers = filterCustomers(customers, {
+    searchTerm,
+    statusFilter,
+  });
 
   const selectedCustomer = customers.find(
     (customer) => customer.id === selectedCustomerId,
@@ -71,43 +74,14 @@ const filteredCustomers = filterCustomers(customers, {
         sortable columns, row selection, persisted preferences, and a linked
         detail panel.
       </p>
-      <div className="searchAndFilters">
-        <div className="searchAndFilters__item">
-          <label className="searchAndFilters__label" htmlFor="customer-search">
-            Search
-          </label>
-          <input
-            className="searchAndFilters__input searchAndFilters__input--search"
-            id="customer-search"
-            type="search"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Search by name, industry, status or contact"
-          />
-        </div>
-        <div className="searchAndFilters__item">
-          <label className="searchAndFilters__label" htmlFor="status-filter">
-            Status
-          </label>
-          <select
-            className="searchAndFilters__input searchAndFilters__input--select"
-            id="status-filter"
-            value={statusFilter}
-            onChange={(event) =>
-              setStatusFilter(event.target.value as CustomerStatus | "all")
-            }
-          >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="prospect">Prospect</option>
-          </select>
-        </div>
-
-        <div className="searchAndFilters__context">
-          Showing {filteredCustomers.length} of {customers.length} customers
-        </div>
-      </div>
+      <CustomerGridControls
+        searchTerm={searchTerm}
+        statusFilter={statusFilter}
+        filteredCount={filteredCustomers.length}
+        totalCount={customers.length}
+        onSearchTermChange={setSearchTerm}
+        onStatusFilterChange={setStatusFilter}
+      />
       <div className="customersLayout">
         <div className="customersLayout__table">
           <DataTable

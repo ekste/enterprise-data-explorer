@@ -93,6 +93,8 @@ button {
 }
 
 .searchAndFilters__context {
+  margin: 0;
+  padding: var(--space-3) 0;
   color: var(--color-text-muted);
 }
 
