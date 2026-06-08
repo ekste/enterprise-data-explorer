@@ -76,6 +76,11 @@ export function CustomersPage() {
   return (
     <main className="main">
       <h1 className="main__header">Customers</h1>
+      <p className="main__description">
+        Explore a reusable customer data grid with search, status filtering,
+        sortable columns, row selection, persisted preferences, and a linked
+        detail panel.
+      </p>
       <div className="searchAndFilters">
         <div className="searchAndFilters__item">
           <label className="searchAndFilters__label" htmlFor="customer-search">

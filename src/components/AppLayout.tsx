@@ -17,9 +17,6 @@ export function AppLayout() {
             <header className="appHeader">
                 <nav className="appHeader__nav" aria-label="Main navigation">
                     <NavLink to="/" className="appHeader__link">
-                        Home
-                    </NavLink>
-                    <NavLink to="/customers" className="appHeader__link">
                         Customers
                     </NavLink>
                     <NavLink

@@ -39,7 +39,9 @@ export function VirtualisedCustomersPage() {
     <main className="main">
       <h1 className="main__header">Virtualised Customers</h1>
       <p className="main__description">
-        A large customer dataset used to demonstrate virtualised rendering.
+        This page renders 10,000 generated customers using row virtualisation.
+        Sorting is still supported, but only the visible rows are mounted in the
+        DOM.
       </p>
 
       <VirtualisedDataTable
