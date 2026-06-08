@@ -1,7 +1,11 @@
-// todo: Future improvement: switch from container-level virtualisation to page-level virtualisation.
-
-import { useMemo, useRef, useState, type ReactNode } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import {
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import "../DataTable/DataTable.css";
 
 type SortDirection = "asc" | "desc";
@@ -26,7 +30,12 @@ export function VirtualisedDataTable<TRow>({
   getRowId,
   rowHeight = 56,
 }: VirtualisedDataTableProps<TRow>) {
-  const parentRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const [scrollMargin, setScrollMargin] = useState(0);
+
+  useLayoutEffect(() => {
+    setScrollMargin(tableRef.current?.offsetTop ?? 0);
+  }, []);
   const [sortColumnKey, setSortColumnKey] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
@@ -50,15 +59,16 @@ export function VirtualisedDataTable<TRow>({
     });
   }, [columns, rows, sortColumnKey, sortDirection]);
 
-// TanStack Virtual exposes APIs that React Compiler cannot safely memoize.
-// This component deliberately uses TanStack's recommended hook API for row virtualisation.
-// eslint-disable-next-line react-hooks/incompatible-library
-  const rowVirtualizer = useVirtualizer({
+  // TanStack Virtual exposes APIs that React Compiler cannot safely memoize.
+  // This component deliberately uses TanStack's recommended hook API for row virtualisation.
+  const rowVirtualizer = useWindowVirtualizer({
     count: sortedRows.length,
-    getScrollElement: () => parentRef.current,
     estimateSize: () => rowHeight,
     overscan: 8,
+    scrollMargin,
   });
+
+  const virtualRows = rowVirtualizer.getVirtualItems();
 
   function handleSort(column: VirtualisedDataTableColumn<TRow>) {
     if (!column.sortValue) {
@@ -108,14 +118,14 @@ export function VirtualisedDataTable<TRow>({
         ))}
       </div>
 
-      <div ref={parentRef} className="dataTable__virtualScroller">
+      <div ref={tableRef} className="dataTable__virtualScroller">
         <div
           className="dataTable__virtualSpacer"
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
           }}
         >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          {virtualRows.map((virtualRow) => {
             const row = sortedRows[virtualRow.index];
 
             return (
@@ -123,7 +133,7 @@ export function VirtualisedDataTable<TRow>({
                 key={getRowId(row)}
                 className="dataTable__row dataTable__virtualRow"
                 style={{
-                  transform: `translateY(${virtualRow.start}px)`,
+                  transform: `translateY(${virtualRow.start - scrollMargin}px)`,
                   gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
                 }}
               >
