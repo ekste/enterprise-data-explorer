@@ -50,6 +50,9 @@ export function VirtualisedDataTable<TRow>({
     });
   }, [columns, rows, sortColumnKey, sortDirection]);
 
+// TanStack Virtual exposes APIs that React Compiler cannot safely memoize.
+// This component deliberately uses TanStack's recommended hook API for row virtualisation.
+// eslint-disable-next-line react-hooks/incompatible-library
   const rowVirtualizer = useVirtualizer({
     count: sortedRows.length,
     getScrollElement: () => parentRef.current,
